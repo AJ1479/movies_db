@@ -12,10 +12,7 @@ router.get('/search', (req, res) => {
 
 const a = [];
 let j = 0;
-function myFunction(mov) {
-  a[j] = mov;
-  j += 1;
-}
+let data;
 
 
 router.post('/search', (req, res) => {
@@ -25,25 +22,33 @@ router.post('/search', (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      const data = JSON.parse(body);
+      data = JSON.parse(body);
       let i;
       let html = '';
       for (i = 0; i < 20; i += 1) {
         const movie = data.results[i].title;
-        html += `<li><button style="border:1px transparent; background-color: transparent;" onclick="${myFunction(movie)}">${movie} </button></li> `;
+        html += `<li><button style="border:1px transparent; background-color: transparent;" onclick="window.location.href='/add/${i}'">${movie} </button></li> `;
       }
       res.render('results', { html });
     }
   });
 });
 
+
+router.get('/add/:id', (req) => {
+  const { id } = req.params;
+  const i = Number(id);
+  const mov = data.results[i].title;
+  a[j] = mov;
+  j += 1;
+});
+
+
 router.get('/list', (req, res) => {
-  console.log(a);
   let i;
   let html = '';
   for (i = 0; i < a.length; i += 1) {
     html += `<li>${a[i]}</li>`;
-    console.log(a[i]);
   }
   res.render('list', { html });
 });
